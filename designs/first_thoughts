@@ -1,0 +1,17 @@
+CLI_CHAT Think Tank
+	I want this to be an application that allows users to have conversations with other users via a middle man server.
+Each user will have a specific id number which the server will track and handle.  Each user will also have a series of
+conversations which will pass through the server but will not permanently reside there.
+
+	Users will be able to:
+		1) Send and recieve messages
+		2) Manage conversations
+		3) Add conversations with new users via tags
+
+	The server will:
+		1) Act as a middle man, storing conversation data only until the target user connects
+		2) Have a list of all users by their auto generated tags
+		3) Organize incoming traffic into lists to be delivered to destination users when they connect
+
+	All server client communication will be done via JSON strings, the list of messages to be delivered to users will be
+organized via a sql database.

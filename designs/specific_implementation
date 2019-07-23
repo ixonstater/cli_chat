@@ -1,0 +1,10 @@
+Server Modules
+	1) Database reading and writing
+	2) Request and response handling
+	3) System security
+
+Client Modules
+	1) Starting up
+	2) Request and response handling
+	3) Deleting users
+	4) Tag generation
