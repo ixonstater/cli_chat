@@ -3,6 +3,7 @@ import control
 import input_validation
 import consts
 import request_response
+import os
 
 def initialize():
     progData = user_data.ProgramData()
@@ -21,6 +22,7 @@ def initialize():
                 break
             except IOError:
                 print(consts.BAD_IP_ADDRESS)
+        progData.serverIp = ip
     if(progData.tag == None):
         progData.tag = request_response.getCodeFromServer()
     return progData
@@ -43,6 +45,7 @@ def mainLoop(data):
             return
 
 def main():
+    os.chdir('/home/ixonstater/stuff/code/python/cli_chat/client')# debugging line, remove before shipping
     progData = initialize()
     mainLoop(progData)
 

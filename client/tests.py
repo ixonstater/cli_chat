@@ -37,6 +37,7 @@ def makeTestConversationList():
 
 
 def main():
+    os.chdir('/home/ixonstater/stuff/code/python/cli_chat/client')# debugging line
     progData = ProgramData()
     progData.conversations = makeTestConversationList()
     progData.writeData()

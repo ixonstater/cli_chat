@@ -33,7 +33,8 @@ class ProgramData:
             conversationsDict[name] = messagesList
         objectDict['conversations'] = conversationsDict
         jsonObjectDict = json.dumps(objectDict)
-        jsonObjectDict.encode('utf-8')
+        ofile = open('./prog_files/data', 'w+')
+        print(jsonObjectDict, file = ofile)
         return
         
 
