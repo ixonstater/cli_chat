@@ -1,16 +1,31 @@
 WELCOME = 'Welcome to CLI_Chat.'
 NEXT_COMMAND = 'Please enter your next command or "help" for a list of commands: '
 INVALID_COMMAND = 'Invalid command recieved, please try again.'
-REQUEST_OWN_USERNAME = None
+WRONG_NUMBER_OF_ARGS = 'Wrong number of command arguments recieved.'
+REQUEST_SERVER_IP = 'Please enter the ip address and port number of the server you wish to connect to in the form IP:PORT: '
+BAD_IP_ADDRESS = 'No response recieved at given ip address.'
 REQUEST_CONVERSATION_TARGET_NAME = None
 REQUEST_CONVERSATION_TARGET_TAG = None
+VALID_COMMANDS = ['exit', 'help', 'addconv', 'rmconv', 'lsconv', 'chat', 'clear', 'mycode']
+NO_ARG_COMMANDS = ['exit', 'help', 'lsconv', 'clear', 'mycode']
+ONE_ARG_COMMANDS = ['rmconv', 'chat']
+TWO_ARG_COMMANDS = ['addconv']
+LOCAL_MESSAGE = 0
+REMOTE_MESSAGE = 1
+LOCAL_MESSAGE_STRING_CODE = 'l'
+REMOTE_MESSAGE_STRING_CODE = 'r'
 HELP_SCHPIEL = '\nAvailable commands: \n' + \
-'  exit: Quits the program saving conversation details, if this command is not given all unsaved data will be ' + \
-'lost on program termination.\n' + \
+'  exit: Quits the program saving conversation details.\n' + \
 '  help: Lists all available commands.\n' + \
 '  clear: Clears the contents of the terminal window.\n' + \
 '  lsconv: Lists current known conversations.\n' + \
 '  addconv: Adds a new conversation, requires a user tag and a name for the conversation eg. "addconv th5ec7 Jimmy"\n' + \
 '  rmconv: Deletes the specified conversation, requires a user tag eg. rmconv th5ec7\n' + \
-'  chat: Opens a chat dialogue to the specified target, requires a conversation name or a user tag.\n'
-VALID_COMMANDS = ['exit', 'help', 'addconv', 'rmconv', 'lsconv', 'chat', 'clear', 'mycode']
+'  chat: Opens a chat dialogue to the specified target, requires a conversation name or a user tag.\n' + \
+'  mycode: Prints your user identification code.\n'
+TUTORIAL_TEXT = 'This is a simple command line chat program.  It has essentially \n' + \
+'two modes: edit mode and chat mode.  In edit mode you can add, delete, \n' + \
+'and view conversations.  In chat mode you can create and send messages \n' + \
+'as well as view incoming messages as they are recieved. Typing help will \n' + \
+'print a list of commands as well as the parameters that each command requires. \n' + \
+'-----------------------------------------------------------------------------'

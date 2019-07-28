@@ -2,33 +2,48 @@ import user_data
 import control
 import input_validation
 import consts
+import request_response
 
-def mainLoop(data):
+def initialize():
+    progData = user_data.ProgramData()
+    progData.readData()
+
     print(consts.WELCOME)
     control.routeCommand(['clear'])
+    if(not progData.hasSeenTutorial):
+        control.showTutorial()
+        progData.hasSeenTutorial = True
+    if(progData.serverIp == None):
+        while(True):
+            ip = input(consts.REQUEST_SERVER_IP)
+            try:
+                input_validation.validateIp(ip)
+                break
+            except IOError:
+                print(consts.BAD_IP_ADDRESS)
+    if(progData.tag == None):
+        progData.tag = request_response.getCodeFromServer()
+    return progData
+
+def mainLoop(data):
     while(True):
-        nextCommand = input(consts.NEXT_COMMAND)
         try:
-            nextCommand = input_validation.validateCommand(nextCommand)
+            nextCommand = input(consts.NEXT_COMMAND)
+            nextCommand = input_validation.commandIsValid(nextCommand)
+            control.routeCommand(nextCommand)
         except IOError:
             print(consts.INVALID_COMMAND)
             continue
-        retval = control.routeCommand(nextCommand)
-        if(retval == 'exit'):
-            break
-    data.writeData()
-    return
-
-def showTutorial():
-    pass
+        except control.ExitException:
+            data.writeData()
+            return
+        except KeyboardInterrupt:
+            data.writeData()
+            print('\n')
+            return
 
 def main():
-    progData = user_data.ProgramData()
-    progData.readOwnData()
-    progData.readKnownTargetUsers()
-    progData.readConversations()
-    if(not progData.hasSeenTutorial):
-        showTutorial()
+    progData = initialize()
     mainLoop(progData)
 
 
