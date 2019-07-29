@@ -9,9 +9,35 @@ class ProgramData:
         self.conversations = {}
         self.hasSeenTutorial = False
         self.serverIp = None
+
+    def initialWrite(self):
+        self.writeData()
+        self.ifile.close()
+        self.ifile = open('./prog_files/data', 'r+')
+        self.fileString = self.ifile.read()
     
     def readData(self):
-        pass
+        self.ifile = open('./prog_files/data', 'r+')
+        self.fileString = self.ifile.read()
+        if(self.fileString == ''):
+            self.initialWrite()
+        objectDict = json.loads(self.fileString)
+        self.tag = objectDict['tag']
+        self.knownTargetUsers = objectDict['knownTargetUsers']
+        self.hasSeenTutorial = objectDict['hasSeenTutorial']
+        self.serverIp = objectDict['serverIp']
+        for name, conversation in objectDict['conversations'].items():
+            conversationObject = Conversation()
+            conversationObject.conversationName = name
+            for message in conversation:
+                messageObject = Message()
+                if(message[0] == 'r'):
+                    messageObject.messageOrigin = consts.REMOTE_MESSAGE
+                elif(message[0] == 'l'):
+                    messageObject.messageOrigin = consts.LOCAL_MESSAGE
+                messageObject.messageText = message[1:]
+                conversationObject.addMessage(messageObject)
+            self.conversations[name] = conversationObject
     
     def writeData(self):
         objectDict = {
@@ -35,9 +61,7 @@ class ProgramData:
         jsonObjectDict = json.dumps(objectDict)
         ofile = open('./prog_files/data', 'w+')
         print(jsonObjectDict, file = ofile)
-        return
         
-
 class Conversation:
     def __init__(self):
         self.conversationName = None
