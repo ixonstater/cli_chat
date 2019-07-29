@@ -8,11 +8,10 @@ import os
 def initialize():
     progData = user_data.ProgramData()
     progData.readData()
-
     print(consts.WELCOME)
-    control.routeCommand(['clear'])
+    print(consts.CLEAR_CODE)
     if(not progData.hasSeenTutorial):
-        control.showTutorial()
+        print(consts.TUTORIAL_TEXT)
         progData.hasSeenTutorial = True
     if(progData.serverIp == None):
         while(True):
@@ -27,27 +26,11 @@ def initialize():
         progData.tag = request_response.getCodeFromServer()
     return progData
 
-def mainLoop(data):
-    while(True):
-        try:
-            nextCommand = input(consts.NEXT_COMMAND)
-            nextCommand = input_validation.commandIsValid(nextCommand)
-            control.routeCommand(nextCommand)
-        except IOError:
-            print(consts.INVALID_COMMAND)
-            continue
-        except control.ExitException:
-            data.writeData()
-            return
-        except KeyboardInterrupt:
-            data.writeData()
-            print('\n')
-            return
-
 def main():
     os.chdir('/home/ixonstater/stuff/code/python/cli_chat/client')# debugging line, remove before shipping
     progData = initialize()
-    mainLoop(progData)
+    progInstance = control.ProgramInstance(progData)
+    progInstance.mainLoop()
 
 
 if __name__ == '__main__':

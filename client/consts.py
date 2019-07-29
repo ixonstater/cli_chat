@@ -1,14 +1,20 @@
 WELCOME = 'Welcome to CLI_Chat.'
+CLEAR_CODE = '\033[2J' + '\n' + '\033[H'
 NEXT_COMMAND = 'Please enter your next command or "help" for a list of commands: '
 INVALID_COMMAND = 'Invalid command recieved, please try again.'
+INVALID_USER_TAG = 'The entered user tag does not exist on this server.'
+NON_EXISTANT_CONVERSATION_NAME = 'The entered conversation name does not exist.'
 WRONG_NUMBER_OF_ARGS = 'Wrong number of command arguments recieved.'
-REQUEST_SERVER_IP = 'Please enter the ip address and port number of the server you wish to connect to in the form IP:PORT: '
-BAD_IP_ADDRESS = 'No response recieved at given ip address.'
+REQUEST_SERVER_IP = 'Please enter the IP address and port number of the server you wish to connect to in the form IP:PORT: '
+BAD_IP_ADDRESS = 'No response recieved at given IP address.'
+DISPLAY_IP_ADDRESS = 'Current IP address: '
+DISPLAY_USER_CODE = 'Your user code is: '
+DISPLAY_CURRENT_CONVERSATIONS = 'Your current conversations are: '
 REQUEST_CONVERSATION_TARGET_NAME = None
 REQUEST_CONVERSATION_TARGET_TAG = None
-VALID_COMMANDS = ['exit', 'help', 'addconv', 'rmconv', 'lsconv', 'chat', 'clear', 'mycode']
-NO_ARG_COMMANDS = ['exit', 'help', 'lsconv', 'clear', 'mycode']
-ONE_ARG_COMMANDS = ['rmconv', 'chat']
+VALID_COMMANDS = ['exit', 'help', 'addconv', 'rmconv', 'lsconv', 'chat', 'clear', 'mycode', 'tutorial', 'getip', 'setip']
+NO_ARG_COMMANDS = ['exit', 'help', 'lsconv', 'clear', 'mycode', 'getip', 'tutorial']
+ONE_ARG_COMMANDS = ['rmconv', 'chat', 'setip']
 TWO_ARG_COMMANDS = ['addconv']
 LOCAL_MESSAGE = 0
 REMOTE_MESSAGE = 1
@@ -22,7 +28,10 @@ HELP_SCHPIEL = '\nAvailable commands: \n' + \
 '  addconv: Adds a new conversation, requires a user tag and a name for the conversation eg. "addconv th5ec7 Jimmy"\n' + \
 '  rmconv: Deletes the specified conversation, requires a user tag eg. rmconv th5ec7\n' + \
 '  chat: Opens a chat dialogue to the specified target, requires a conversation name or a user tag.\n' + \
-'  mycode: Prints your user identification code.\n'
+'  mycode: Prints your user identification code.\n' + \
+'  tutorial: Prints the new user tutorial.\n' + \
+'  getip: Prints the current server IP address.\n' + \
+'  setip: Sets a new server IP address, requires the IP and port number in the form IP:PORT.'
 TUTORIAL_TEXT = 'This is a simple command line chat program.  It has essentially \n' + \
 'two modes: edit mode and chat mode.  In edit mode you can add, delete, \n' + \
 'and view conversations.  In chat mode you can create and send messages \n' + \

@@ -1,4 +1,5 @@
 import consts
+import request_response
 import os
 
 def commandIsValid(command):
@@ -18,6 +19,12 @@ def numberOfArgs(command):
         raise IndexError('Command should have two args.')
 
 def validateIp(ip):
-    if(os.system('ping -c 1 ' + ip + ' > /dev/null 2>&1') != 0):
-        raise IOError('No response from server')
-    return
+    request_response.getServerExistsVerification(ip)
+
+def validateUserTag(tag):
+    pass
+
+def validateConversationName(name, names):
+    if(not name in names):
+        raise IOError('Conversation name does not exist.')
+    pass

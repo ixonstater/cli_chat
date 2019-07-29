@@ -4,6 +4,7 @@ import json
 
 def makeTestConversationList():
     amy = Conversation()
+    amy.tag = 'fh2n4'
     amy.conversationName = 'amy'
     amy1 = Message()
     amy1.messageOrigin = consts.REMOTE_MESSAGE
@@ -20,6 +21,7 @@ def makeTestConversationList():
     amy.addMessage(amy3)
 
     mike = Conversation()
+    mike.tag = 'thnda2'
     mike.conversationName = 'mike'
     mike1 = Message()
     mike1.messageOrigin = consts.LOCAL_MESSAGE
@@ -39,7 +41,7 @@ def makeTestConversationList():
 def main():
     os.chdir('/home/ixonstater/stuff/code/python/cli_chat/client')# debugging line
     progData = ProgramData()
-    progData.conversations = makeTestConversationList()
+    # progData.conversations = makeTestConversationList()
     progData.readData()
     
 

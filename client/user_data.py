@@ -28,8 +28,9 @@ class ProgramData:
         self.serverIp = objectDict['serverIp']
         for name, conversation in objectDict['conversations'].items():
             conversationObject = Conversation()
+            conversationObject.tag = conversation['tag']
             conversationObject.conversationName = name
-            for message in conversation:
+            for message in conversation['messages']:
                 messageObject = Message()
                 if(message[0] == 'r'):
                     messageObject.messageOrigin = consts.REMOTE_MESSAGE
@@ -38,6 +39,7 @@ class ProgramData:
                 messageObject.messageText = message[1:]
                 conversationObject.addMessage(messageObject)
             self.conversations[name] = conversationObject
+        return
     
     def writeData(self):
         objectDict = {
@@ -49,14 +51,16 @@ class ProgramData:
         }
         conversationsDict = {}
         for name, conversation in self.conversations.items():
-            nameString = name
+            conversationDict = {}
+            conversationDict['tag'] = conversation.tag
             messagesList = []
             for message in conversation.messages:
                 if(message.messageOrigin == consts.REMOTE_MESSAGE):
                     messagesList.append(consts.REMOTE_MESSAGE_STRING_CODE + message.messageText)
                 elif(message.messageOrigin == consts.LOCAL_MESSAGE):
                     messagesList.append(consts.LOCAL_MESSAGE_STRING_CODE + message.messageText)
-            conversationsDict[name] = messagesList
+            conversationDict['messages'] = messagesList
+            conversationsDict[name] = conversationDict
         objectDict['conversations'] = conversationsDict
         jsonObjectDict = json.dumps(objectDict)
         ofile = open('./prog_files/data', 'w+')
@@ -66,6 +70,7 @@ class Conversation:
     def __init__(self):
         self.conversationName = None
         self.messages = []
+        self.tag = None
     
     def addMessage(self, message):
         self.messages.append(message)

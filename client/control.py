@@ -1,57 +1,108 @@
 import consts
 import input_validation
+import user_data
 
 class ExitException(Exception):
     pass
 
-def routeCommand(command):
-    try:
-        input_validation.numberOfArgs(command)
-    except IndexError:
-        print(consts.WRONG_NUMBER_OF_ARGS)
-        return
-        
-    if(command[0] == 'help'):
-        return showHelp()
-    elif(command[0] == 'exit'):
-        return exitProgram()
-    elif(command[0] == 'lsconv'):
-        return listConversations()
-    elif(command[0] == 'addconv'):
-        return addConversation(command[1], command[2])
-    elif(command[0] == 'rmconv'):
-        return deleteConversation(command[1])
-    elif(command[0] == 'clear'):
-        return clear()
-    elif(command[0] == 'chat'):
-        return startChat(command[1]) 
-    elif(command[0] == 'mycode'):
-        return printOwnCode()
+class ProgramInstance:
+    def __init__(self, data):
+        self.data = data
 
-def exitProgram():
-    raise ExitException
+    def mainLoop(self):
+        while(True):
+            try:
+                nextCommand = input(consts.NEXT_COMMAND)
+                nextCommand = input_validation.commandIsValid(nextCommand)
+                self.routeCommand(nextCommand)
+            except IOError:
+                print(consts.INVALID_COMMAND)
+                continue
+            except ExitException:
+                self.data.writeData()
+                return
+            except KeyboardInterrupt:
+                self.data.writeData()
+                print('\n')
+                return
 
-def listConversations():
-    pass
+    def routeCommand(self, command):
+        try:
+            input_validation.numberOfArgs(command)
+        except IndexError:
+            print(consts.WRONG_NUMBER_OF_ARGS)
+            return
+            
+        if(command[0] == 'help'):
+            return self.showHelp()
+        elif(command[0] == 'exit'):
+            return self.exitProgram()
+        elif(command[0] == 'lsconv'):
+            return self.listConversations()
+        elif(command[0] == 'addconv'):
+            return self.addConversation(command[1], command[2])
+        elif(command[0] == 'rmconv'):
+            return self.deleteConversation(command[1])
+        elif(command[0] == 'clear'):
+            return self.clear()
+        elif(command[0] == 'chat'):
+            return self.startChat(command[1]) 
+        elif(command[0] == 'mycode'):
+            return self.printOwnCode()
+        elif(command[0] == 'tutorial'):
+            return self.showTutorial()
+        elif(command[0] == 'getip'):
+            self.getServerIpAddress()
+        elif(command[0] == 'setip'):
+            self.setServerIpAddress(command[1])
 
-def addConversation(userTag, conversationName):
-    pass
+    def exitProgram(self):
+        raise ExitException
 
-def deleteConversation(conversationTag):
-    pass
+    def listConversations(self):
+        print(consts.DISPLAY_CURRENT_CONVERSATIONS)
+        for conversationName in self.data.conversations.keys():
+            print(conversationName)
 
-def startChat(targetIndentifier):
-    pass
+    def addConversation(self, userTag, conversationName):
+        try:
+            input_validation.validateUserTag(userTag)
+        except IOError:
+            print(consts.INVALID_USER_TAG)
+        newConversation = user_data.Conversation()
+        newConversation.conversationName = conversationName
+        newConversation.tag = userTag
+        self.data.conversations[conversationName] = newConversation
 
-def showHelp():
-    print(consts.HELP_SCHPIEL)
+    def deleteConversation(self, conversationName):
+        try:
+            input_validation.validateConversationName(conversationName, self.data.conversations.keys())
+        except IOError:
+            print(consts.NON_EXISTANT_CONVERSATION_NAME)
+        del self.data.conversations[conversationName]
 
-def clear():
-    print('\033[2J')
-    print('\033[H')
+    def startChat(self, targetIndentifier):
+        pass
 
-def printOwnCode():
-    pass
+    def showHelp(self):
+        print(consts.HELP_SCHPIEL)
 
-def showTutorial():
-    print(consts.TUTORIAL_TEXT)
+    def clear(self):
+        print(consts.CLEAR_CODE)
+
+    def printOwnCode(self):
+        print(consts.DISPLAY_USER_CODE + str(self.data.tag))
+
+    def showTutorial(self):
+        print(consts.TUTORIAL_TEXT)
+
+    def getServerIpAddress(self):
+        print(consts.DISPLAY_IP_ADDRESS + str(self.data.serverIp))
+
+    def setServerIpAddress(self, newIp):
+        try:
+            input_validation.validateIp(newIp)
+        except IOError:
+            print(consts.BAD_IP_ADDRESS)
+            return
+        self.data.serverIp = newIp
