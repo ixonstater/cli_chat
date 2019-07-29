@@ -55,6 +55,10 @@ class ProgramInstance:
             self.getServerIpAddress()
         elif(command[0] == 'setip'):
             self.setServerIpAddress(command[1])
+        elif(command[0] == 'find'):
+            self.findInConversation(command[1], command[2])
+        elif(command[0] == 'dispconv'):
+            self.displayConversation(command[1])
 
     def exitProgram(self):
         raise ExitException
@@ -80,6 +84,18 @@ class ProgramInstance:
         except IOError:
             print(consts.NON_EXISTANT_CONVERSATION_NAME)
         del self.data.conversations[conversationName]
+
+    def displayConversation(self, conversationName):
+        try:
+            input_validation.validateConversationName(conversationName, self.data.conversations.keys())
+        except IOError:
+            print(consts.NON_EXISTANT_CONVERSATION_NAME)
+
+    def findInConversation(self, conversationName, term):
+        try:
+            input_validation.validateConversationName(conversationName, self.data.conversations.keys())
+        except IOError:
+            print(consts.NON_EXISTANT_CONVERSATION_NAME)
 
     def startChat(self, targetIndentifier):
         pass
