@@ -8,16 +8,17 @@ class ProgramData:
         self.knownTargetUsers = []
         self.conversations = {}
         self.hasSeenTutorial = False
-        self.serverIp = None
+        self.ip = None
+        self.port = None
 
     def initialWrite(self):
         self.writeData()
         self.ifile.close()
-        self.ifile = open('./prog_files/data', 'r+')
+        self.ifile = open('./prog_files/data', 'r')
         self.fileString = self.ifile.read()
     
     def readData(self):
-        self.ifile = open('./prog_files/data', 'r+')
+        self.ifile = open('./prog_files/data', 'r')
         self.fileString = self.ifile.read()
         if(self.fileString == ''):
             self.initialWrite()
@@ -25,7 +26,8 @@ class ProgramData:
         self.tag = objectDict['tag']
         self.knownTargetUsers = objectDict['knownTargetUsers']
         self.hasSeenTutorial = objectDict['hasSeenTutorial']
-        self.serverIp = objectDict['serverIp']
+        self.ip = objectDict['ip']
+        self.port = objectDict['port']
         for name, conversation in objectDict['conversations'].items():
             conversationObject = Conversation()
             conversationObject.tag = conversation['tag']
@@ -46,7 +48,8 @@ class ProgramData:
             'tag': self.tag,
             'knownTargetUsers' : self.knownTargetUsers,
             'hasSeenTutorial' : self.hasSeenTutorial,
-            'serverIp' : self.serverIp,
+            'ip' : self.ip,
+            'port' : self.port,
             'conversations': {}
         }
         conversationsDict = {}

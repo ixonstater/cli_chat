@@ -1,13 +1,32 @@
 import consts
 import input_validation
 import user_data
+import socket
+import request_response
 
 class ExitException(Exception):
     pass
 
 class ProgramInstance:
-    def __init__(self, data):
-        self.data = data
+    def __init__(self):
+        self.socket = socket.socket()
+        self.data = user_data.ProgramData()
+        self.data.readData()
+        while(self.data.ip == None):
+            ip = input(consts.REQUEST_SERVER_IP)
+            self.setServerIpAddress(ip)
+        if(self.data.tag == None):
+            self.requestTagFromServer()
+
+    def printWelcome(self):
+        print(consts.WELCOME)
+        print(consts.CLEAR_CODE)
+        if(not self.data.hasSeenTutorial):
+            print(consts.TUTORIAL_TEXT)
+            self.data.hasSeenTutorial = True
+
+    def requestTagFromServer(self):
+        request = request_response.requestTag()
 
     def mainLoop(self):
         while(True):
@@ -113,12 +132,13 @@ class ProgramInstance:
         print(consts.TUTORIAL_TEXT)
 
     def getServerIpAddress(self):
-        print(consts.DISPLAY_IP_ADDRESS + str(self.data.serverIp))
+        print(consts.DISPLAY_IP_ADDRESS + self.data.ip + ':' + str(self.data.port))
 
     def setServerIpAddress(self, newIp):
         try:
-            input_validation.validateIp(newIp)
-        except IOError:
+            port, ip = input_validation.validateIp(newIp, self.socket)
+        except:
             print(consts.BAD_IP_ADDRESS)
             return
-        self.data.serverIp = newIp
+        self.data.port = port
+        self.data.ip = ip

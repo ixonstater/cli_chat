@@ -1,7 +1,19 @@
 import os
-def getCodeFromServer():
-    pass
+import json
+import consts
 
-def getServerExistsVerification(ip):
-    if(os.system('ping -c 1 ' + ip + ' > /dev/null 2>&1') != 0):
-        raise IOError('No response from server')
+def decodeResponse(response):
+        return json.loads(response)
+
+def requestTag():
+        request = {'intent': consts.NEW_USER_CODE}
+        request = json.dumps(request).encode('utf-8')
+        return request
+
+def getServerExistsVerification():
+        request = {'intent': consts.SERVER_EXISTS}
+        request = json.dumps(request).encode('utf-8')
+        return request
+
+def sendMessage():
+        pass
