@@ -10,18 +10,25 @@ class ProgramData:
         self.hasSeenTutorial = False
         self.ip = None
         self.port = None
+        self.ifile = None
 
     def initialWrite(self):
         self.writeData()
-        self.ifile.close()
         self.ifile = open('./prog_files/data', 'r')
         self.fileString = self.ifile.read()
     
     def readData(self):
+        if(not os.path.isfile('./prog_files/data')):
+            self.initialWrite()
+
         self.ifile = open('./prog_files/data', 'r')
         self.fileString = self.ifile.read()
+
         if(self.fileString == ''):
+            self.ifile.close()
             self.initialWrite()
+
+
         objectDict = json.loads(self.fileString)
         self.tag = objectDict['tag']
         self.knownTargetUsers = objectDict['knownTargetUsers']

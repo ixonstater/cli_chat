@@ -1,1 +1,1 @@
-python3 client/main.py
+./bin/python3 client/main.py
